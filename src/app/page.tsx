@@ -30,7 +30,7 @@ export default function Home() {
   }, [api]);
 
   return (
-    <div className="grid grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {listData.length > 0 ? (
         listData.map((data: ProductProps) => (
           <CardS

@@ -17,7 +17,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`bg-secondaryC min-w-screen min-h-screen antialiased`}>
         <Header />
-        <div className="px-72 py-52">{children}</div>
+        <div className="px-4 md:px-16 xl:px-20 2xl:px-72 py-32 2xl:py-40">
+          {children}
+        </div>
       </body>
     </html>
   );
