@@ -17,7 +17,7 @@ export default {
 			quinaryC: '#CCCCCC',
 			senaryC: '#FFFFFF',
   			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
+  			foreground: '#FFFFFF',
   			card: {
   				DEFAULT: 'hsl(var(--card))',
   				foreground: 'hsl(var(--card-foreground))'
