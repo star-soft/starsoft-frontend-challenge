@@ -1,9 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-import { routes } from "@/services/routes";
-import { Get } from "@/services/get";
+import { useQuery } from "@tanstack/react-query";
+import { fetchData } from "@/services/fetchData";
 
 import CardS from "./_components/Card";
 import { Loader } from "@/components/loader";
@@ -18,32 +16,31 @@ interface ProductProps {
 }
 
 export default function Home() {
-  const [listData, setListData] = useState([]);
+  const api = "https://starsoft-challenge-7dfd4a56a575.herokuapp.com/v1/products"
+  async function getNfts() {
+    const data = await fetchData(api); 
+    return data;
+  }
 
-  const api = routes.products;
+  const { data, isLoading, isError } = useQuery({
+    queryFn: async () => await getNfts(),
+    queryKey: ["NFTS"],
+  });
 
-  useEffect(() => {
-    Get({
-      getRoute: api,
-      setList: setListData,
-    });
-  }, [api]);
+  if (isLoading) return <Loader />;
+  if (isError) return <div>Desculpa, houve um erro</div>;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {listData.length > 0 ? (
-        listData.map((data: ProductProps) => (
-          <CardS
-            key={data.id}
-            title={data.name}
-            description={data.description}
-            price={data.price}
-            image={data.image}
-          />
-        ))
-      ) : (
-        <div className="w-full h-full flex justify-center items-center"><Loader/></div>
-      )}
+      {data?.data?.map((product: ProductProps) => (
+        <CardS
+          key={product.id}
+          title={product.name}
+          description={product.description}
+          price={product.price}
+          image={product.image}
+        />
+      ))}
     </div>
   );
 }
