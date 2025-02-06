@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX } from "react";
+import { JSX, useState, useEffect } from "react";
 
 import Image from "next/image";
 
@@ -26,38 +26,70 @@ interface Props {
 }
 
 const ItemCart = () => {
-  const description = "Uma mochila resistente com compartimentos secretos, ideal para aventureiros que precisam carregar uma variedade de itens essenciais em suas jornadas épicas."
+  const [cartItems, setCartItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    const savedItems = localStorage.getItem("purchasedItems");
+    if (savedItems) {
+      setCartItems(JSON.parse(savedItems));
+    }
+  }, []);
+
+  const removeItem = (index: number) => {
+    const updatedItems = cartItems.filter((_, i) => i !== index);
+
+    setCartItems(updatedItems);
+    localStorage.setItem("purchasedItems", JSON.stringify(updatedItems));
+  };
+
   return (
     <div>
-      <div className="p-4 rounded-lg grid grid-cols-3 gap-2 bg-quaternaryC hover:bg-quaternaryC/90">
-        <div className="overflow-hidden rounded-lg">
-          <Image
-            src={"https://softstar.s3.amazonaws.com/items/backpack.png"}
-            width={200}
-            height={100}
-            alt="NFT picture"
-            className="scale-110 transition-all duration-300"
-          />
-        </div>
-        <div className="col-span-2">
-          <div className="mb-1">Backpack</div>
-          <TooltipInfo data={description}>
-          <div className="text-xs text-ellipsis font-extralight overflow-hidden whitespace-nowrap max-w-[25ch]">
-            {description}
+      {cartItems.length > 0 ? (
+        cartItems.map((item, index) => (
+          <div
+            key={index}
+            className="p-4 rounded-lg grid grid-cols-3 gap-2 bg-quaternaryC hover:bg-quaternaryC/90 mb-4"
+          >
+            <div className="overflow-hidden rounded-lg">
+              <Image
+                src={item.image}
+                width={200}
+                height={100}
+                alt="Item Image"
+                className="scale-110 transition-all duration-300"
+              />
+            </div>
+            <div className="col-span-2">
+              <div className="mb-1">{item.title}</div>
+              <TooltipInfo data={item.description}>
+                <div className="text-xs text-ellipsis font-extralight overflow-hidden whitespace-nowrap max-w-[25ch]">
+                  {item.description}
+                </div>
+              </TooltipInfo>
+              <div className="mt-1 mb-1 flex items-center gap-1">
+                <Image
+                  src={"/Ellipse.png"}
+                  width={20}
+                  height={23}
+                  alt="ETH Icon"
+                />
+                <div className="text-md">{item.price} ETH</div>
+              </div>
+              <div className="flex justify-between">
+                <NumberPicker />
+                <Button
+                  className="w-fit h-fit p-2 rounded-full"
+                  onClick={() => removeItem(index)}
+                >
+                  <Trash />
+                </Button>
+              </div>
+            </div>
           </div>
-          </TooltipInfo>
-          <div className="mt-1 mb-1 flex items-center gap-1">
-            <Image src={"/Ellipse.png"} width={20} height={23} alt="ETH Icon" />
-            <div className="text-md">332 ETH</div>
-          </div>
-          <div className="flex justify-between">
-          <NumberPicker />
-          <Button className="w-fit h-fit p-2 rounded-full">
-            <Trash/>
-          </Button>
-          </div>
-        </div>
-      </div>
+        ))
+      ) : (
+        <p>Seu carrinho está vazio.</p>
+      )}
     </div>
   );
 };
@@ -82,7 +114,19 @@ export function CartDrawer({ children }: Props) {
             <DrawerDescription>Mochila de Compras</DrawerDescription>
           </DrawerHeader>
           <ItemCart />
-          <DrawerFooter className="p-0 mt-4">
+          <DrawerFooter className="p-0">
+            <div className="flex justify-between">
+              <div>TOTAL</div>
+              <div className="mt-1 mb-1 flex items-center gap-1">
+                <Image
+                  src={"/Ellipse.png"}
+                  width={20}
+                  height={23}
+                  alt="ETH Icon"
+                />
+                <div className="text-md"> ETH</div>
+              </div>
+            </div>
             <Button>FINALIZAR COMPRA</Button>
           </DrawerFooter>
         </div>

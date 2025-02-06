@@ -54,6 +54,7 @@ export default function Home() {
       {data?.data?.map((product: ProductProps) => (
         <CardS
           key={product.id}
+          id={product.id}
           title={product.name}
           description={product.description}
           price={product.price}

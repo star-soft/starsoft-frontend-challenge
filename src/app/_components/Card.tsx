@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import Transition from "@/components/transition-components";
 
 interface CardSProps {
+  id: any;
   image: string;
   title: string;
   description: string;
@@ -21,11 +22,31 @@ interface CardSProps {
 }
 
 export default function CardS({
+  id,
   image,
   title,
   description,
   price,
 }: CardSProps) {
+
+  const handleAddCart = () => {
+    const itemData = {
+      id,
+      image,
+      title,
+      description,
+      price,
+    };
+
+    const currentItems = localStorage.getItem("purchasedItems");
+
+    const updatedItems = currentItems ? JSON.parse(currentItems) : [];
+    updatedItems.push(itemData);
+    
+    localStorage.setItem("purchasedItems", JSON.stringify(updatedItems));
+    alert("Informações salvas no localStorage!");
+  };
+
   return (
     <Transition>
       <Card className="rounded-lg bg-tertiaryC flex flex-col h-full hover:shadow-gray-900 hover:bg-slate-950">
@@ -54,7 +75,7 @@ export default function CardS({
           </Reveal>
         </CardContent>
         <CardFooter className="flex justify-end mt-auto pt-2">
-          <Button>COMPRAR</Button>
+          <Button onClick={handleAddCart}>COMPRAR</Button>
         </CardFooter>
       </Card>
     </Transition>
