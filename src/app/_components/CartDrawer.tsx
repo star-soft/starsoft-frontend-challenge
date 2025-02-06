@@ -1,11 +1,6 @@
-"use client";
-
 import { JSX, useState, useEffect } from "react";
-
 import Image from "next/image";
-
 import { MoveLeft, Trash } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -17,7 +12,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-
 import { NumberPicker } from "@/components/number-picker";
 import { TooltipInfo } from "@/components/tooltip-info";
 
@@ -27,19 +21,37 @@ interface Props {
 
 const ItemCart = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
+  const [quantities, setQuantities] = useState<number[]>([]);
 
   useEffect(() => {
     const savedItems = localStorage.getItem("purchasedItems");
     if (savedItems) {
-      setCartItems(JSON.parse(savedItems));
+      const items = JSON.parse(savedItems);
+      setCartItems(items);
+      setQuantities(new Array(items.length).fill(1));  
     }
   }, []);
 
+  const handleQuantityChange = (index: number, newQuantity: number) => {
+    const updatedQuantities = [...quantities];
+    updatedQuantities[index] = newQuantity;
+    setQuantities(updatedQuantities);
+  };
+
   const removeItem = (index: number) => {
     const updatedItems = cartItems.filter((_, i) => i !== index);
+    const updatedQuantities = quantities.filter((_, i) => i !== index);
 
     setCartItems(updatedItems);
+    setQuantities(updatedQuantities);
     localStorage.setItem("purchasedItems", JSON.stringify(updatedItems));
+  };
+
+  const calculateTotal = () => {
+    return cartItems.reduce((total, item, index) => {
+      const quantity = quantities[index];
+      return total + item.price * quantity;
+    }, 0);
   };
 
   return (
@@ -76,7 +88,10 @@ const ItemCart = () => {
                 <div className="text-md">{item.price} ETH</div>
               </div>
               <div className="flex justify-between">
-                <NumberPicker />
+                <NumberPicker
+                  value={quantities[index]}
+                  onChange={(newQuantity) => handleQuantityChange(index, newQuantity)}
+                />
                 <Button
                   className="w-fit h-fit p-2 rounded-full"
                   onClick={() => removeItem(index)}
@@ -88,8 +103,25 @@ const ItemCart = () => {
           </div>
         ))
       ) : (
-        <p>Seu carrinho está vazio.</p>
+        <div className="my-12">
+          <p>Seu carrinho está vazio.</p>
+        </div>
       )}
+      
+      <div className="my-4">
+        <div className="flex justify-between">
+          <div>TOTAL</div>
+          <div className="mt-1 mb-1 flex items-center gap-1">
+            <Image
+              src={"/Ellipse.png"}
+              width={20}
+              height={23}
+              alt="ETH Icon"
+            />
+            <div className="text-md">{calculateTotal()} ETH</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -115,18 +147,6 @@ export function CartDrawer({ children }: Props) {
           </DrawerHeader>
           <ItemCart />
           <DrawerFooter className="p-0">
-            <div className="flex justify-between">
-              <div>TOTAL</div>
-              <div className="mt-1 mb-1 flex items-center gap-1">
-                <Image
-                  src={"/Ellipse.png"}
-                  width={20}
-                  height={23}
-                  alt="ETH Icon"
-                />
-                <div className="text-md"> ETH</div>
-              </div>
-            </div>
             <Button>FINALIZAR COMPRA</Button>
           </DrawerFooter>
         </div>

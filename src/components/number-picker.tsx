@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
-export const NumberPicker = () => {
-  const [value, setValue] = useState(0);
+interface NumberPickerProps {
+  value: number;
+  onChange: (newQuantity: number) => void;
+}
 
-  const increase = () => setValue(prev => prev + 1);
-  const decrease = () => setValue(prev => prev - 1);
-  const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(Number(e.target.value));
+export const NumberPicker: React.FC<NumberPickerProps> = ({ value, onChange }) => {
+  const increase = () => onChange(value + 1);
+  const decrease = () => onChange(value - 1);
+  const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = Number(e.target.value);
+    if (!isNaN(newValue)) onChange(newValue);
+  };
 
   return (
     <div className="bg-secondaryC rounded-lg w-fit">
@@ -25,7 +31,7 @@ export const NumberPicker = () => {
       </motion.button>
 
       <motion.input
-        type="string"
+        type="number"
         value={value}
         onChange={handleValueChange}
         style={{
@@ -33,7 +39,7 @@ export const NumberPicker = () => {
           fontSize: '12px',
           width: `25px`,
           backgroundColor: '#232323',
-          color: '#fff', 
+          color: '#fff',
         }}
       />
 
@@ -43,7 +49,7 @@ export const NumberPicker = () => {
         style={{
           padding: '10px',
           fontSize: '12px',
-          color: '#fff', 
+          color: '#fff',
           border: 'none',
           borderRadius: '5px',
         }}
