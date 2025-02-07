@@ -108,9 +108,9 @@ const ItemCart = () => {
         </div>
       )}
       
-      <div className="my-4">
+      <div className="my-12">
         <div className="flex justify-between">
-          <div>TOTAL</div>
+          <div className="font-bold">TOTAL</div>
           <div className="mt-1 mb-1 flex items-center gap-1">
             <Image
               src={"/Ellipse.png"}
@@ -118,7 +118,7 @@ const ItemCart = () => {
               height={23}
               alt="ETH Icon"
             />
-            <div className="text-md">{calculateTotal()} ETH</div>
+            <div className="text-md font-semibold">{calculateTotal()} ETH</div>
           </div>
         </div>
       </div>

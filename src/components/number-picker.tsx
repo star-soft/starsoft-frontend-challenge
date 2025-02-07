@@ -8,10 +8,15 @@ interface NumberPickerProps {
 
 export const NumberPicker: React.FC<NumberPickerProps> = ({ value, onChange }) => {
   const increase = () => onChange(value + 1);
-  const decrease = () => onChange(value - 1);
+  const decrease = () => {
+    if (value > 1) onChange(value - 1);
+  };
+  
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
-    if (!isNaN(newValue)) onChange(newValue);
+    if (!isNaN(newValue) && newValue >= 1) {
+      onChange(newValue);
+    }
   };
 
   return (
@@ -41,6 +46,7 @@ export const NumberPicker: React.FC<NumberPickerProps> = ({ value, onChange }) =
           backgroundColor: '#232323',
           color: '#fff',
         }}
+        min={1}
       />
 
       <motion.button
