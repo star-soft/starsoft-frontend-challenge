@@ -1,131 +1,101 @@
-# Teste para Desenvolvedor(a) Front-End Next.js
+<h1 align="left">Marketplace NFTs</h1>
 
-## Introdução
+###
 
-Bem-vindo(a) ao processo seletivo para a posição de **Desenvolvedor(a) Front-End** em nossa equipe! Este teste tem como objetivo avaliar suas habilidades técnicas em **Next.js**, **React** e as demais tecnologias mencionadas na descrição da vaga.
+<h2 align="left">Sobre</h2>
 
-## Instruções
+###
 
-- Faça um **fork** deste repositório para o seu GitHub pessoal.
-- Desenvolva a aplicação conforme as especificações abaixo, seguindo as **melhores práticas de desenvolvimento**.
-- Após a conclusão, envie o link do seu repositório para avaliação.
-- Sinta-se à vontade para adicionar qualquer documentação ou comentários que julgar necessário.
+<p align="left">Esta aplicação foi desenvolvida com o objetivo de atender a um escopo de teste para a Starsoft. O projeto consiste em um esqueleto de frontend voltado para a venda de NFTs (Tokens Não Fungíveis), proporcionando uma base sólida para futuras implementações de funcionalidades e integrações.<br><br>O foco principal está na estruturação da interface, visando a escalabilidade, organização de código e uma experiência de usuário fluida e intuitiva.</p>
 
-## Desafio
+###
 
-### Contexto
+<h2 align="left">Requisitos</h2>
 
-Você foi designado para desenvolver a interface de um **marketplace de NFTs** (Non-Fungible Tokens) com funcionalidades de carrinho de compras. O objetivo é criar uma aplicação web responsiva e interativa que proporcione uma ótima experiência ao usuário, utilizando **Next.js** como framework principal.
+###
 
-### Requisitos
+<p align="left">- Node.js (Versão 28)<br>- Docker e Docker Compose<br>- NPM (Gerenciador de pacotes)</p>
 
-1. **Uso do Next.js**
+###
 
-   - Utilize **Next.js** como o framework principal da aplicação.
-   - Aproveite os recursos do Next.js, como:
-     - **Renderização no Lado do Servidor (SSR)** e/ou **Geração de Sites Estáticos (SSG)** para otimizar o carregamento das páginas.
-     - **Rotas Dinâmicas** para páginas de detalhes dos NFTs.
-     - **Next.js API Routes** se necessário para funcionalidades adicionais.
-     - **Otimização de Imagens** com o componente `next/image`.
-     - **Importação Dinâmica** para carregamento otimizado de componentes pesados.
+<h2 align="left">Passo a passo</h2>
 
-2. **Interface do Usuário**
+###
 
-   - Implemente o design fornecido no link do **Figma**:
-     - [Figma Design](https://www.figma.com/design/j9HHfWPPoLyObtlVBeMhTD/Front-end-Challenge?node-id=0-1&t=sWwJ0qlYdwzJHKyJ-0)
-   - Siga fielmente o design e as especificações fornecidas.
-   - Garanta que a aplicação seja **responsiva** e funcione bem em diferentes tamanhos de tela.
-   - Implemente navegação entre as páginas utilizando o sistema de roteamento do Next.js.
+<h4 align="left">1. Git clone do repositório</h4>
 
-3. **Gerenciamento de Estado**
+###
 
-   - Utilize **Redux** ou **Redux Toolkit** para gerenciar o estado global da aplicação.
-   - Configure a store do Redux e implemente os reducers necessários.
-   - Gerencie estados como itens no carrinho,
+```bash
+git clone https://github.com/BrunoReCarmo/starsoft-frontend-challenge.git
+```
 
-4. **Busca de Dados**
+###
 
-   - Use **React Query** para buscar e sincronizar dados da API.
-   - A API está documentada em:
-     - [Starsoft Challenge API Docs](https://starsoft-challenge-7dfd4a56a575.herokuapp.com/v1/docs)
-   - Implemente chamadas para obter a lista de NFTs, detalhes dos itens, etc.
-   - Utilize o **Data Fetching** do Next.js (`getStaticProps`, `getServerSideProps`) conforme adequado.
-   - Trate os estados de **loading**, **sucesso** e **erro** nas requisições.
+<h4 align="left">2. Após abrir o Docker Compose executar</h4>
 
-5. **Animações e Interações**
+###
 
-   - Utilize **Framer Motion** para adicionar animações e interações conforme necessário.
-   - Garanta que as animações sejam suaves e contribuam para a experiência do usuário.
-   - Implemente animações em transições de página, hover em botões e cards, entre outros.
+```bash
+docker-compose up
+```
+###
 
-6. **Estilização**
+<p align="left">http://localhost:3000/</p>
 
-   - Use **SASS** ou **Styled Components** para estilizar a aplicação.
-   - Organize os estilos de maneira modular e reutilizável.
-   - Siga as boas práticas de organização de arquivos e componentes.
-   - Garanta a consistência visual em toda a aplicação.
+###
 
-7. **Configuração com Docker**
+<h4 align="left">3. Executar SEM docker</h4>
 
-   - Configure o ambiente de desenvolvimento utilizando **Docker** e **Docker Compose**.
-   - Crie um arquivo `Dockerfile` para a aplicação Next.js.
-   - Crie um arquivo `docker-compose.yml` para orquestrar os serviços necessários.
-   - A aplicação deve ser iniciada com um único comando (`docker-compose up`).
-   - Documente quaisquer configurações específicas necessárias.
+###
 
-8. **Boas Práticas de Código**
+```bash
+npm i<br>npm run dev
+```
+###
 
-   - Aplique os princípios de **Clean Code** em toda a sua implementação.
-   - Utilize um padrão de código consistente e configure **ESLint** e **Prettier** no projeto.
-   - Documente o código quando necessário para melhorar a legibilidade.
-   - Utilize os recursos do **Next.js** para otimização, como importação dinâmica e otimização de imagens.
+<p align="left">http://localhost:3000/</p>
 
-9. **Testes**
+###
 
-   - Escreva testes unitários e/ou de integração para as principais funcionalidades da aplicação utilizando **Jest** e **React Testing Library**.
-   - Os testes devem cobrir, no mínimo, os componentes principais e funcionalidades críticas.
-   - Garanta que todos os testes passem antes de enviar o projeto.
+<h2 align="left">Principais tecnologias</h2>
 
-### Diferenciais (Desejável)
+###
 
-- **TypeScript**
+<div align="left">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" height="40" alt="typescript logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" height="40" alt="nextjs logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" height="40" alt="nodejs logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original-wordmark.svg" height="40" alt="tailwindcss logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg" height="40" alt="redux logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jest/jest-plain.svg" height="40" alt="jest logo"  />
+  <img width="12" />
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" height="40" alt="docker logo"  />
+</div>
 
-  - Utilize **TypeScript** para adicionar tipagem estática ao seu código, aumentando a robustez e manutenção do projeto.
+###
 
-- **SEO e Acessibilidade**
+**TypeScript:** Superset do JavaScript com tipagem estática, evitando erros de execução.<br>**Next.js:** Framework React para renderização no servidor (SSR) e sites estáticos (SSG).<br>**npm:** Gerenciador de pacotes para instalar e gerenciar dependências.<br>**Tailwind CSS:** Framework CSS utilitário para criação de interfaces rápidas e responsivas.<br>**Redux:** Gerenciamento centralizado de estado, útil para controle de carrinho.<br>**Jest:** Framework de testes automatizados para garantir o funcionamento da aplicação.<br>**Docker & Docker Compose:** Ferramentas para padronizar ambientes de desenvolvimento e deploy.
 
-  - Implemente boas práticas de **SEO** e **acessibilidade** na aplicação.
-  - Utilize o componente `next/head` para manipulação de meta tags.
-  - Otimize a performance da aplicação seguindo as recomendações do **Lighthouse**.
+###
 
-## Entrega
+<h3 align="left">auxiliares</h3>
 
-- O código deve estar disponível em um repositório Git (preferencialmente **GitHub**) público.
-- Inclua um arquivo `README.md` com:
-  - Instruções claras sobre como configurar e executar a aplicação.
-  - Descrição das funcionalidades implementadas.
-  - Tecnologias utilizadas e justificativas de escolhas técnicas.
-  - Possíveis limitações ou melhorias futuras.
-- Certifique-se de que o histórico de commits reflita o andamento do desenvolvimento, com mensagens claras e objetivas.
+###
 
-## Avaliação
+**React Query:** Ferramenta para gerenciar dados assíncronos com foco em desempenho e cache.<br>**Prettier:** Ferramenta para formatar código e manter padrões de estilo.<br>**Framer Motion:** Biblioteca para criar animações e transições fluidas.<br>**ShadCN**: Biblioteca de componentes React com design acessível e customizável.
 
-Os seguintes aspectos serão considerados na avaliação:
+###
 
-- **Uso do Next.js**: Aproveitamento adequado dos recursos e features do Next.js na aplicação.
-- **Fidelidade ao Design**: A interface deve ser fiel ao design fornecido no Figma.
-- **Funcionalidade**: A aplicação deve estar funcional e todas as interações devem estar implementadas corretamente.
-- **Gerenciamento de Estado**: O uso de Redux para gerenciamento de estado deve ser eficiente e bem estruturado.
-- **Busca de Dados**: A integração com a API usando React Query e Next.js deve ser feita corretamente.
-- **Animações e Interações**: As animações devem ser suaves e bem integradas na experiência do usuário.
-- **Código Limpo**: O código deve ser limpo, seguindo boas práticas de desenvolvimento e princípios de Clean Code.
-- **Estilização**: A aplicação deve ser estilizada usando SASS de forma modular e reutilizável.
-- **Testes**: Qualidade e abrangência dos testes implementados.
-- **Configuração com Docker**: A configuração do ambiente de desenvolvimento utilizando Docker e Docker Compose deve ser clara e funcional.
-- **Documentação**: Clareza das instruções e documentação fornecidas no `README.md`.
-- **Histórico de Commits**: Uso adequado do Git com commits bem descritos.
+<h2 align="left">🎯 Futuras possíveis melhorias</h2>
 
----
+###
 
-Boa sorte! Estamos ansiosos para conhecer o seu trabalho e potencial.
+- **Integração com APIs de pagamento** para processamentos seguros e eficientes.<br>- **Implementação avançada de autenticação** usando tokens JWT.<br>- **Reforço da segurança** da aplicação com práticas de proteção de dados e otimização do banco de dados.<br>- **Expansão da cobertura de testes automatizados** para garantir maior estabilidade e confiabilidade.<br>- **Melhoria no sistema de login**, com suporte a autenticação multifator (MFA) e recuperação de senha.</p>
 
+###
