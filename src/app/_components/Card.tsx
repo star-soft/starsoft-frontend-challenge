@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 
 import Reveal from "@/components/reveal";
@@ -28,7 +29,6 @@ export default function CardS({
   description,
   price,
 }: CardSProps) {
-
   const handleAddCart = () => {
     const itemData = {
       id,
@@ -42,42 +42,52 @@ export default function CardS({
 
     const updatedItems = currentItems ? JSON.parse(currentItems) : [];
     updatedItems.push(itemData);
-    
+
     localStorage.setItem("purchasedItems", JSON.stringify(updatedItems));
     alert("Informações salvas no localStorage!");
   };
 
   return (
     <Transition>
-      <Card className="rounded-lg bg-tertiaryC flex flex-col h-full hover:shadow-gray-900 hover:bg-slate-950">
-        <CardHeader>
-          <div className="overflow-hidden rounded-lg">
-            <Image src={image} width={600} height={200} alt="NFT picture" className="scale-110 transition-all duration-300 hover:scale-100"/>
-          </div>
-        </CardHeader>
-        <CardContent className="grid flex-grow gap-4">
-          <Reveal>
-            <CardTitle className="text-lg">{title}</CardTitle>
-          </Reveal>
-          <Reveal>
-            <CardDescription className="text-xs">{description}</CardDescription>
-          </Reveal>
-          <Reveal>
-            <div className="flex items-center gap-2 my-4">
+      <Link href={`/${id}`}>
+        <Card className="rounded-lg bg-tertiaryC flex flex-col h-full hover:shadow-gray-900 hover:bg-slate-950">
+          <CardHeader>
+            <div className="overflow-hidden rounded-lg">
               <Image
-                src={"/Ellipse.png"}
-                width={25}
-                height={20}
-                alt="ETH Icon"
+                src={image}
+                width={600}
+                height={200}
+                alt="NFT picture"
+                className="scale-110 transition-all duration-300 hover:scale-100"
               />
-              <div className="text-xl">{price} ETH</div>
             </div>
-          </Reveal>
-        </CardContent>
-        <CardFooter className="flex justify-end mt-auto pt-2">
-          <Button onClick={handleAddCart}>COMPRAR</Button>
-        </CardFooter>
-      </Card>
+          </CardHeader>
+          <CardContent className="grid flex-grow gap-4">
+            <Reveal>
+              <CardTitle className="text-lg">{title}</CardTitle>
+            </Reveal>
+            <Reveal>
+              <CardDescription className="text-xs">
+                {description}
+              </CardDescription>
+            </Reveal>
+            <Reveal>
+              <div className="flex items-center gap-2 my-4">
+                <Image
+                  src={"/Ellipse.png"}
+                  width={25}
+                  height={20}
+                  alt="ETH Icon"
+                />
+                <div className="text-xl">{price} ETH</div>
+              </div>
+            </Reveal>
+          </CardContent>
+          <CardFooter className="flex justify-end mt-auto pt-2">
+            <Button onClick={handleAddCart}>COMPRAR</Button>
+          </CardFooter>
+        </Card>
+      </Link>
     </Transition>
   );
 }

@@ -1,42 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchData } from "@/services/fetchData";
-
-import CardS from "./_components/Card";
 import { Loader } from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-
-interface ProductProps {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  price: string;
-  createdAt: string;
-}
+import CardS from "./_components/Card";
+import useFetchNfts from "@/hooks/useFetchNfts";
 
 export default function Home() {
   const [limit, setLimit] = React.useState(12);
 
-  const getNfts = async (limit: number) => {
-    const data = await fetchData(
-      `https://starsoft-challenge-7dfd4a56a575.herokuapp.com/v1/products?limit=${limit}`
-    );
-    return data;
-  };
-
-  const { data, isLoading, isError } = useQuery<{
-    data: ProductProps[];
-    metadata: { count: number };
-  }>({
-    queryKey: ["NFTS", limit],
-    queryFn: () => getNfts(limit),
-    enabled: limit > 0,
-    placeholderData: (prev) => prev,
-  });
+  const { data, isLoading, isError } = useFetchNfts(limit);
 
   const handleLoadMore = () => {
     setLimit((prevLimit) => prevLimit + 8);
@@ -51,7 +25,7 @@ export default function Home() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {data?.data?.map((product: ProductProps) => (
+      {data?.data?.map((product) => (
         <CardS
           key={product.id}
           id={product.id}
