@@ -1,18 +1,11 @@
 import Image from "next/image";
 
+import { AddCart, Props } from "@/services/addCartData";
+
 import Reveal from "@/components/reveal";
 
 import { Button } from "@/components/ui/button";
 import Transition from "@/components/transition-components";
-
-interface Props {
-  id: number;
-  image: string;
-  title: string;
-  createdAt: string;
-  description: string;
-  price: string;
-}
 
 export default function ProductDetails({
   id,
@@ -22,24 +15,16 @@ export default function ProductDetails({
   description,
   price,
 }: Props) {
-  const handleAddCart = () => {
-    const itemData = {
+  const HandleSubmitData = () => {
+    AddCart({
       id,
       image,
       title,
       createdAt,
       description,
       price,
-    };
-
-    const currentItems = localStorage.getItem("purchasedItems");
-
-    const updatedItems = currentItems ? JSON.parse(currentItems) : [];
-    updatedItems.push(itemData);
-
-    localStorage.setItem("purchasedItems", JSON.stringify(updatedItems));
-    alert("Informações salvas no localStorage!");
-  };
+    });
+  }
 
   return (
     <Transition>
@@ -76,7 +61,7 @@ export default function ProductDetails({
           </Reveal>
           <div className="grid md:grid-cols-2 md:gap-4 mt-4 md:mt-0 lg:mt-8">
             <div className="flex justify-end mt-auto pt-2">
-              <Button onClick={handleAddCart} className="bg-quaternaryC ">
+              <Button onClick={HandleSubmitData} className="bg-quaternaryC ">
                 ADICIONAR AO CARRINHO
               </Button>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import {useState} from "react";
 import { Loader } from "@/components/loader";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -8,7 +8,7 @@ import CardS from "./_components/Card";
 import useFetchNfts from "@/hooks/useFetchNfts";
 
 export default function Home() {
-  const [limit, setLimit] = React.useState(12);
+  const [limit, setLimit] = useState(12);
 
   const { data, isLoading, isError } = useFetchNfts(limit);
 
@@ -30,6 +30,7 @@ export default function Home() {
           key={product.id}
           id={product.id}
           title={product.name}
+          createdAt={product.createdAt}
           description={product.description}
           price={product.price}
           image={product.image}

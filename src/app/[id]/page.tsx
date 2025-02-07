@@ -5,12 +5,12 @@ import { useParams } from "next/navigation";
 
 import useFetchNfts from "@/hooks/useFetchNfts";
 import ProductDetails from "./_components/product-details";
-import { fetchData } from "@/services/fetchData";
+
 import { Loader } from "@/components/loader";
 import { BackHome } from "../../components/back-home";
 import { NotFound } from "@/components/not-found";
 
-const CategoryId: React.FC = () => {
+const ProductOverview: React.FC = () => {
   // Get ID from URL
   const { id } = useParams();
   const [limit, setLimit] = useState(10); 
@@ -64,4 +64,4 @@ const CategoryId: React.FC = () => {
   );
 };
 
-export default CategoryId;
+export default ProductOverview;

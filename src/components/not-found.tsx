@@ -1,5 +1,4 @@
 import { BackHome } from "@/components/back-home";
-import Image from "next/image";
 
 export const NotFound = () => {
   return (

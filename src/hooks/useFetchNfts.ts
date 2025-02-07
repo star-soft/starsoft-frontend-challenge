@@ -10,6 +10,7 @@ interface ProductProps {
   createdAt: string;
 }
 
+// API exposed for the purpose of demonstrating its usage in the test
 const useFetchNfts = (limit: number) => {
   const getNfts = async (limit: number) => {
     const data = await fetchData(

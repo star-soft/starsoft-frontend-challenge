@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 
+import { AddCart, Props } from "@/services/addCartData";
+
 import Reveal from "@/components/reveal";
 
 import {
@@ -14,38 +16,25 @@ import {
 import { Button } from "@/components/ui/button";
 import Transition from "@/components/transition-components";
 
-interface CardSProps {
-  id: any;
-  image: string;
-  title: string;
-  description: string;
-  price: string;
-}
-
 export default function CardS({
   id,
   image,
   title,
+  createdAt,
   description,
   price,
-}: CardSProps) {
-  const handleAddCart = () => {
-    const itemData = {
+}: Props) {
+  const HandleSubmitData = () => {
+    AddCart({
       id,
       image,
       title,
+      createdAt,
       description,
       price,
-    };
+    });
+  }
 
-    const currentItems = localStorage.getItem("purchasedItems");
-
-    const updatedItems = currentItems ? JSON.parse(currentItems) : [];
-    updatedItems.push(itemData);
-
-    localStorage.setItem("purchasedItems", JSON.stringify(updatedItems));
-    alert("Informações salvas no localStorage!");
-  };
 
   return (
     <Transition>
@@ -87,7 +76,7 @@ export default function CardS({
           </CardContent>
         </Link>
         <CardFooter className="flex justify-end mt-auto pt-2">
-          <Button onClick={handleAddCart}>COMPRAR</Button>
+          <Button onClick={HandleSubmitData}>COMPRAR</Button>
         </CardFooter>
       </Card>
     </Transition>
