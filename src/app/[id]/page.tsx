@@ -7,7 +7,8 @@ import useFetchNfts from "@/hooks/useFetchNfts";
 import ProductDetails from "./_components/product-details";
 import { fetchData } from "@/services/fetchData";
 import { Loader } from "@/components/loader";
-import { BackHome } from "./_components/back-home";
+import { BackHome } from "../../components/back-home";
+import { NotFound } from "@/components/not-found";
 
 const CategoryId: React.FC = () => {
   // Get ID from URL
@@ -46,7 +47,7 @@ const CategoryId: React.FC = () => {
   if (isLoading) return <Loader/>;
   if (isError) return <div>Desculpa, houve um erro ao carregar os dados.</div>;
 
-  if (!product) return <div>Produto não encontrado</div>;
+  if (!product) return <NotFound/>;
 
   return (
     <>

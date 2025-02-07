@@ -8,7 +8,7 @@ export const BackHome = () => {
       <Transition>
         <Link href={`/`}>
         <div className="flex justify-center p-4 rounded-lg hover:text-primaryC bg-quaternaryC w-full md:w-2/4 lg:w-1/3">
-          <MoveLeft className="mr-2"/> Retornar ao menu principal
+          <MoveLeft className="mr-2"/> Retornar a página inicial
         </div>
         </Link>
       </Transition>

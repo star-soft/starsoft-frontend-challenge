@@ -49,8 +49,8 @@ export default function CardS({
 
   return (
     <Transition>
-      <Link href={`/${id}`}>
-        <Card className="rounded-lg bg-tertiaryC flex flex-col h-full hover:shadow-gray-900 hover:bg-slate-950">
+      <Card className="rounded-lg bg-tertiaryC flex flex-col h-full hover:shadow-gray-900 hover:bg-slate-950">
+        <Link href={`/${id}`}>
           <CardHeader>
             <div className="overflow-hidden rounded-lg">
               <Image
@@ -64,10 +64,12 @@ export default function CardS({
           </CardHeader>
           <CardContent className="grid flex-grow gap-4">
             <Reveal>
-              <CardTitle className="text-lg">{title}</CardTitle>
+              <CardTitle className="text-lg hover:text-primaryC">
+                {title}
+              </CardTitle>
             </Reveal>
             <Reveal>
-              <CardDescription className="text-xs">
+              <CardDescription className="text-xs hover:text-primaryC">
                 {description}
               </CardDescription>
             </Reveal>
@@ -83,11 +85,11 @@ export default function CardS({
               </div>
             </Reveal>
           </CardContent>
-          <CardFooter className="flex justify-end mt-auto pt-2">
-            <Button onClick={handleAddCart}>COMPRAR</Button>
-          </CardFooter>
-        </Card>
-      </Link>
+        </Link>
+        <CardFooter className="flex justify-end mt-auto pt-2">
+          <Button onClick={handleAddCart}>COMPRAR</Button>
+        </CardFooter>
+      </Card>
     </Transition>
   );
 }
