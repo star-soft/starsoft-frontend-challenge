@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/slices/cartSlice";
 import PageTransition from "./PageTransition";
+import { useRouter } from "next/navigation";
 
 const CardProduct = ({
   product,
@@ -22,17 +23,22 @@ const CardProduct = ({
   openCart: () => void;
 }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
+  const prefetchProductPage = () => {
+    router.prefetch(`/nft/${product.id}`);
+    console.log("Prefetching product page", product.id);
+  };
   const handleAddToCart = () => {
     dispatch(addToCart(product));
-    openCart(); // Abre o carrinho automaticamente
+    openCart();
   };
 
   return (
     <PageTransition>
       <Card className="h-full max-w-[289px] xl:max-w-[360px] m-auto xl:max-h-[555px] w-full bg-foreground border-0 text-white">
         <CardHeader>
-          <Link href={`/nft/${product.id}`}>
+          <Link href={`/nft/${product.id}`} onMouseEnter={prefetchProductPage}>
             <Image
               className="rounded-lg"
               priority
@@ -51,7 +57,7 @@ const CardProduct = ({
         </CardContent>
         <CardFooter className="grid gap-2">
           <div className="text-xl font-bold flex items-center gap-2 mb-2">
-            <Image src="eth.svg" alt="coin" width={20} height={20} />
+            <Image src="eth.svg" alt="Ethereum" width={29} height={29} />
             <p className="text-lg">
               {product.price} <span>ETH</span>
             </p>

@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts, addProducts, setPage } from "@/slices/productsSlice";
@@ -15,7 +16,7 @@ interface ProductListProps {
   initialMetadata?: ProductMetadata;
 }
 
-const ITEMS_PER_PAGE = 8; // Número de itens por carregamento
+const ITEMS_PER_PAGE = 8; // Número de itens no primeiro carregamento
 
 const ProductList = ({
   initialProducts = [],
@@ -31,9 +32,10 @@ const ProductList = ({
       };
     }) => state.products,
   );
+
   const { data, isLoading, error } = useProducts(page);
+
   const [isButtonLoading, setIsButtonLoading] = useState(false);
-  const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     if (initialProducts.length > 0 && initialMetadata) {
@@ -44,35 +46,18 @@ const ProductList = ({
           metadata: initialMetadata,
         }),
       );
-
-      // Exibe apenas os primeiros 8 itens localmente
-      setVisibleProducts(initialProducts.slice(0, ITEMS_PER_PAGE));
     }
   }, [initialProducts, initialMetadata, dispatch]);
 
   useEffect(() => {
     if (data) {
-      // Adiciona mais produtos ao estado global e exibe os próximos itens localmente
+      // Adiciona mais produtos ao estado global
       dispatch(
         addProducts({
           products: data.products,
           metadata: data.metadata,
         }),
       );
-
-      // Adiciona os novos itens ao estado visível
-      setVisibleProducts((prevVisible) => {
-        const allProducts = [
-          ...prevVisible,
-          ...products.slice(visibleProducts.length, products.length),
-          ...data.products.slice(0, ITEMS_PER_PAGE),
-        ];
-
-        return allProducts.filter(
-          (product, index, self) =>
-            index === self.findIndex((item) => item.id === product.id),
-        );
-      });
       setIsButtonLoading(false);
     }
   }, [data, dispatch]);
@@ -94,18 +79,19 @@ const ProductList = ({
         ))}
       </ul>
     );
-  if (error) return <p>Error loading products</p>;
+
+  if (error) return <p>Erro ao carregar os produtos.</p>;
 
   const progressValue = Math.min(
-    (visibleProducts.length / (metadata?.count || 1)) * 100,
+    (products.length / (metadata?.count || 1)) * 100,
     100,
   );
 
   return (
     <div className="text-white">
       <ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {visibleProducts.length > 0 ? (
-          visibleProducts.map((product: Product) => (
+        {products.length > 0 ? (
+          products.slice(0, ITEMS_PER_PAGE * page).map((product: Product) => (
             <li key={product.id}>
               <CardProduct product={product} openCart={() => {}} />
             </li>
@@ -135,10 +121,6 @@ const ProductList = ({
               : "Você já viu tudo"}
         </Button>
       </div>
-
-      <p>Total de produtos: {metadata?.count || 0}</p>
-
-      <p>Itens exibidos na tela: {visibleProducts.length}</p>
     </div>
   );
 };

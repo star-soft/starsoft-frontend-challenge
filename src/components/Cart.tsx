@@ -55,7 +55,14 @@ const Cart = () => {
           name="menu"
           className="cursor-pointer hover:bg-foreground transition-all duration-300 p-2 rounded-full"
         >
-          <Image src="/bag.svg" alt="Bag" width={33} height={34} />
+          <div className="relative">
+            {cartItems.length > 0 && (
+              <span className="absolute bg-red-500 text-white text-xs font-bold rounded-full w-4 h-4 flex items-center justify-center -right-3">
+                {cartItems.length}
+              </span>
+            )}
+            <Image src="/bag.svg" alt="Bag" width={33} height={34} />
+          </div>
         </SheetTrigger>
 
         <SheetContent
@@ -87,38 +94,42 @@ const Cart = () => {
                       className="rounded"
                     />
                     <div>
-                      <p className="font-bold text-lg">{item.name}</p>
-                      <p className="text-sm line-clamp-1">{item.description}</p>
+                      <div className="grid grid-cols-1 gap-2">
+                        <p className="font-bold text-lg">{item.name}</p>
+                        <p className="text-sm line-clamp-1">
+                          {item.description}
+                        </p>
 
-                      <p className="text-lg font-medium class flex items-center gap-2 mt-2 mb-2">
-                        <span>
-                          <Image
-                            src="/eth.svg"
-                            alt="Ethereum"
-                            width={20}
-                            height={20}
-                            className="inline-block"
-                          />
-                        </span>
-                        {item.price} ETH
-                      </p>
-                      <div className="flex items-center gap-4 bg-background p-2 rounded-lg w-max">
-                        <Button
-                          onClick={() => handleRemoveQuantity(item.id)}
-                          className="bg-transparent"
-                          size="sm"
-                        >
-                          -
-                        </Button>
-                        <p className="text-sm">{item.quantity}</p>
+                        <p className="text-lg font-medium class flex items-center gap-2 mt-2 mb-2">
+                          <span>
+                            <Image
+                              src="/eth.svg"
+                              alt="Ethereum"
+                              width={29}
+                              height={29}
+                              className="inline-block"
+                            />
+                          </span>
+                          {item.price} ETH
+                        </p>
+                        <div className="grid grid-cols-3 text-center items-center gap-2 bg-background p-1 rounded-lg w-full max-w-[90px] xl:w-max">
+                          <Button
+                            onClick={() => handleRemoveQuantity(item.id)}
+                            className="bg-transparent"
+                            size="sm"
+                          >
+                            -
+                          </Button>
+                          <p className="text-sm">{item.quantity}</p>
 
-                        <Button
-                          onClick={() => handleAddQuantity(item.id)}
-                          className="bg-transparent"
-                          size="sm"
-                        >
-                          +
-                        </Button>
+                          <Button
+                            onClick={() => handleAddQuantity(item.id)}
+                            className="bg-transparent text-left"
+                            size="sm"
+                          >
+                            +
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -150,15 +161,15 @@ const Cart = () => {
                     <Image
                       src="/eth.svg"
                       alt="Ethereum"
-                      width={20}
-                      height={20}
+                      width={29}
+                      height={29}
                       className="inline-block"
                     />
                   </span>
                   {total} ETH
                 </p>
               </div>
-              <Button className="w-full mt-4 bg-primary">
+              <Button className="w-full h-16 mt-4 bg-primary">
                 Finalizar Compra
               </Button>
             </div>

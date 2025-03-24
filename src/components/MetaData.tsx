@@ -1,9 +1,9 @@
 const MetaData = () => {
   return (
-    <>
+    <head>
       <title>NFT SHOP</title>
       <meta name="description" content="os melhores NFTs do mercado" />
-      <meta name="keywords" content="Next.js, SEO, metatags, tutorial" />
+      <meta name="keywords" content="Next.js, SEO, Nfts" />
       <meta name="author" content="Gabriel Teixeira" />
       <meta property="og:title" content="NFT SHOP" />
       <meta property="og:description" content="os melhores NFTs do mercado" />
@@ -15,7 +15,7 @@ const MetaData = () => {
       <meta name="twitter:description" content="os melhores NFTs do mercado" />
       <meta name="twitter:image" content="/logo-starsoft.svg" />
       <link rel="icon" href="/favicon.ico" />
-    </>
+    </head>
   );
 };
 export default MetaData;

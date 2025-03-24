@@ -7,7 +7,7 @@ const PageTransition = ({ children }: { children: ReactNode }) => {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.95 }} // Começa ligeiramente deslocado para baixo e menor
+        initial={{ opacity: 0.5, y: 20, scale: 0.99 }} // Começa ligeiramente deslocado para baixo e menor
         animate={{
           opacity: 1,
           y: 0, // Desloca para a posição original
