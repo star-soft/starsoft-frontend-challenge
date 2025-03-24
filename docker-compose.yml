@@ -1,0 +1,13 @@
+version: "3"
+services:
+  app:
+    container_name: marketplace_nft
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm run dev && tail -f /dev/null"
