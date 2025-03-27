@@ -39,47 +39,40 @@ Antes de começar, certifique-se de ter instalado:
    ```bash
    git clone https://github.com/seu-usuario/nextjs-nft-marketplace.git
    cd nextjs-nft-marketplace
-   Instale as dependências:
    ```
 
-bash
-Copiar
-Editar
-npm install
-Inicie o servidor de desenvolvimento:
+2. **Instale as dependências:**:
 
-bash
-Copiar
-Editar
-npm run dev
-Acesse no navegador:
+   ```bash
+   npm install
+   ```
 
-arduino
-Copiar
-Editar
+3. **Inicie o servidor de desenvolvimento::**:
+   ```bash
+   npm run dev
+   ```
+4. **Acesse no navegador::**
+
 http://localhost:3000
-🌟 Funcionalidades
-Marketplace de NFTs responsivo e moderno.
 
-Sistema de gerenciamento de estado com Redux.
+## 🌟 Funcionalidades
 
-Transições e animações suaves usando Framer Motion.
+- Marketplace de NFTs responsivo e moderno.
 
-Suporte a temas (dark/light mode) com next-themes.
+- Sistema de gerenciamento de estado com Redux.
 
-🧪 Testes
-Testes unitários e de integração foram configurados com Jest e Testing Library. Para rodar os testes, use:
+- Transições e animações suaves usando Framer Motion.
 
-bash
-Copiar
-Editar
+- Suporte a temas (dark/light mode) com next-themes.
+
+## 🧪 Testes
+
+- Testes unitários e de integração foram configurados com Jest e Testing Library. Para rodar os testes, use:
+
+```bash
 npm run test
-✨ Contribuindo
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.
+```
 
-📜 Licença
-Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais informações.
+## ✨ Contribuindo
 
-javascript
-Copiar
-Editar
+- Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts, addProducts, setPage } from "@/slices/productsSlice";
 import { Product } from "@/types/Product";
@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { CardProduct } from "./CardProduct";
 import CardSkeleton from "./skeleton/CardSkeleton";
+import Image from "next/image";
 
 interface ProductListProps {
   initialProducts?: Product[];
@@ -34,6 +35,8 @@ const ProductList = ({
   const { data, isLoading, error } = useProducts(page);
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
+  const [showArrow, setShowArrow] = useState(false);
+  const productListRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (initialProducts.length > 0 && initialMetadata) {
@@ -72,6 +75,60 @@ const ProductList = ({
     }
   }, [data, dispatch]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (productListRef.current) {
+        const scrollLeft = productListRef.current.scrollLeft;
+        const scrollWidth = productListRef.current.scrollWidth;
+        const clientWidth = productListRef.current.clientWidth;
+
+        if (
+          scrollLeft + clientWidth >= scrollWidth - 10 &&
+          metadata?.hasNextPage
+        ) {
+          setShowArrow(true);
+        } else {
+          setShowArrow(false);
+        }
+      }
+    };
+
+    if (productListRef.current) {
+      productListRef.current.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (productListRef.current) {
+        productListRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [metadata]);
+  useEffect(() => {
+    if (visibleProducts.length > 10 && productListRef.current) {
+      const container = productListRef.current;
+      const totalWidth = container.scrollWidth;
+      const containerWidth = container.clientWidth;
+      const productWidth = 230 * 10;
+
+      if (totalWidth > containerWidth) {
+        let scrollPosition = totalWidth - containerWidth - productWidth;
+        if (
+          visibleProducts.length > Math.floor(containerWidth / productWidth)
+        ) {
+          scrollPosition = totalWidth - containerWidth - productWidth;
+          console.log("1");
+        } else {
+          console.log("2");
+
+          scrollPosition = totalWidth - containerWidth - productWidth;
+        }
+        container.scrollTo({
+          left: scrollPosition,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [visibleProducts]);
   const handleLoadMore = () => {
     if (metadata?.hasNextPage && !isButtonLoading) {
       setIsButtonLoading(true);
@@ -79,9 +136,30 @@ const ProductList = ({
     }
   };
 
+  const handleLoadMoreMobile = () => {
+    if (metadata?.hasNextPage && !isButtonLoading) {
+      setIsButtonLoading(true);
+      dispatch(setPage(page + 1));
+    }
+  };
+
+  const scrollToStart = () => {
+    if (productListRef.current) {
+      if (isButtonLoading) {
+        productListRef.current.scrollTo({
+          left: 0,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
   if (isLoading && products.length === 0)
     return (
-      <ul className="flex overflow-auto md:overflow-visible h-[460px] md:h-auto gap-4 md:grid xl:grid-cols-1 xl:gap-8 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+      <ul
+        ref={productListRef}
+        className="flex overflow-auto md:overflow-visible h-[460px] md:h-auto gap-4 md:grid xl:grid-cols-1 xl:gap-8 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4"
+      >
         {[...Array(ITEMS_PER_PAGE)].map((_, index) => (
           <li key={index}>
             <CardSkeleton />
@@ -98,7 +176,10 @@ const ProductList = ({
 
   return (
     <div className="text-white">
-      <ul className="flex overflow-auto md:overflow-visible h-[460px] md:h-auto gap-4 md:grid xl:grid-cols-1 xl:gap-8 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+      <ul
+        ref={productListRef}
+        className="flex overflow-auto md:overflow-visible h-[460px] md:h-auto gap-4 md:grid xl:grid-cols-1 xl:gap-8 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4"
+      >
         {visibleProducts.length > 0 ? (
           visibleProducts.map((product: Product) => (
             <li key={product.id}>
@@ -120,7 +201,7 @@ const ProductList = ({
         <Button
           onClick={handleLoadMore}
           disabled={!metadata?.hasNextPage || isButtonLoading}
-          className="w-full mt-4 p-4"
+          className="w-full mt-4 p-4 hidden md:block"
           size={"lg"}
         >
           {isButtonLoading
@@ -129,6 +210,26 @@ const ProductList = ({
               ? "Ver mais"
               : "Você já viu tudo"}
         </Button>
+
+        {showArrow && (
+          <Button
+            onClick={() => {
+              scrollToStart();
+              handleLoadMoreMobile();
+            }}
+            disabled={!metadata?.hasNextPage || isButtonLoading}
+            className="absolute right-0 top-60 mt-4 p-4 md:hidden block"
+            size={"lg"}
+          >
+            <Image
+              src="/arrow.svg"
+              alt="Arrow down"
+              width={24}
+              height={24}
+              className="rotate-180"
+            />
+          </Button>
+        )}
       </div>
     </div>
   );
