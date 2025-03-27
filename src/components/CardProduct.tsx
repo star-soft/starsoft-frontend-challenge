@@ -66,6 +66,7 @@ const CardProduct = ({
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
+    setIsHovered(false);
     openCart();
   };
 

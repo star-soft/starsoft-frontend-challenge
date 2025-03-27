@@ -76,11 +76,13 @@ const ProductList = ({
   }, [data, dispatch]);
 
   useEffect(() => {
+    const currentRef = productListRef.current;
+
     const handleScroll = () => {
-      if (productListRef.current) {
-        const scrollLeft = productListRef.current.scrollLeft;
-        const scrollWidth = productListRef.current.scrollWidth;
-        const clientWidth = productListRef.current.clientWidth;
+      if (currentRef) {
+        const scrollLeft = currentRef.scrollLeft;
+        const scrollWidth = currentRef.scrollWidth;
+        const clientWidth = currentRef.clientWidth;
 
         if (
           scrollLeft + clientWidth >= scrollWidth - 10 &&
@@ -93,13 +95,13 @@ const ProductList = ({
       }
     };
 
-    if (productListRef.current) {
-      productListRef.current.addEventListener("scroll", handleScroll);
+    if (currentRef) {
+      currentRef.addEventListener("scroll", handleScroll);
     }
 
     return () => {
-      if (productListRef.current) {
-        productListRef.current.removeEventListener("scroll", handleScroll);
+      if (currentRef) {
+        currentRef.removeEventListener("scroll", handleScroll);
       }
     };
   }, [metadata]);
@@ -111,17 +113,7 @@ const ProductList = ({
       const productWidth = 230 * 10;
 
       if (totalWidth > containerWidth) {
-        let scrollPosition = totalWidth - containerWidth - productWidth;
-        if (
-          visibleProducts.length > Math.floor(containerWidth / productWidth)
-        ) {
-          scrollPosition = totalWidth - containerWidth - productWidth;
-          console.log("1");
-        } else {
-          console.log("2");
-
-          scrollPosition = totalWidth - containerWidth - productWidth;
-        }
+        const scrollPosition = totalWidth - containerWidth - productWidth;
         container.scrollTo({
           left: scrollPosition,
           behavior: "smooth",
