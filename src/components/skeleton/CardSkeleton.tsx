@@ -10,11 +10,11 @@ import { Skeleton } from "../ui/skeleton";
 
 const CardSkeleton = () => {
   return (
-    <Card className="h-auto max-w-[289px] xl:max-w-[360px] m-auto xl:max-h-[555px] w-full bg-foreground border-0 text-white">
+    <Card className="h-full max-w-[289px] xl:max-w-[360px] m-auto xl:max-h-[555px] w-full bg-foreground border-0 text-white">
       <CardHeader>
-        <Skeleton className="rounded-lg w-full max-w-[289px] h-[240px] xl:h-[286px]" />
+        <Skeleton className="rounded-lg w-full max-w-[290px] aspect-square" />
       </CardHeader>
-      <CardContent>
+      <CardContent className="w-[251px] lg:w-[289px]">
         <CardTitle>
           <Skeleton className="h-10" />
         </CardTitle>

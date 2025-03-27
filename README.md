@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js NFT Marketplace
 
-## Getting Started
+Um marketplace de NFTs desenvolvido com **Next.js** e uma stack moderna para aplicações escaláveis e performáticas.
 
-First, run the development server:
+## 🚀 Tecnologias utilizadas
 
-```bash
+- [Next.js](https://nextjs.org/)
+- [React](https://reactjs.org/)
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [React Query](https://tanstack.com/query)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Radix UI](https://www.radix-ui.com/)
+- [Jest](https://jestjs.io/) e [Testing Library](https://testing-library.com/)
+
+## 📦 Scripts disponíveis
+
+Os principais scripts para desenvolvimento, build e testes estão configurados:
+
+- `npm run dev`: Inicia o servidor de desenvolvimento com Turbopack.
+- `npm run build`: Cria o build de produção.
+- `npm run start`: Inicia a aplicação em modo de produção.
+- `npm run lint`: Realiza a lintagem do código.
+- `npm run test`: Executa os testes unitários.
+- `npm run test:watch`: Roda os testes em modo "watch".
+- `npm run test:coverage`: Gera um relatório de cobertura de testes.
+
+## 🛠️ Pré-requisitos
+
+Antes de começar, certifique-se de ter instalado:
+
+- Node.js (v18 ou superior)
+- npm ou yarn
+
+## 📖 Como rodar o projeto
+
+1. **Clone o repositório**:
+
+   ```bash
+   git clone https://github.com/seu-usuario/nextjs-nft-marketplace.git
+   cd nextjs-nft-marketplace
+   Instale as dependências:
+   ```
+
+bash
+Copiar
+Editar
+npm install
+Inicie o servidor de desenvolvimento:
+
+bash
+Copiar
+Editar
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Acesse no navegador:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+arduino
+Copiar
+Editar
+http://localhost:3000
+🌟 Funcionalidades
+Marketplace de NFTs responsivo e moderno.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Sistema de gerenciamento de estado com Redux.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Transições e animações suaves usando Framer Motion.
 
-## Learn More
+Suporte a temas (dark/light mode) com next-themes.
 
-To learn more about Next.js, take a look at the following resources:
+🧪 Testes
+Testes unitários e de integração foram configurados com Jest e Testing Library. Para rodar os testes, use:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+bash
+Copiar
+Editar
+npm run test
+✨ Contribuindo
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+📜 Licença
+Este projeto está licenciado sob a licença MIT. Consulte o arquivo LICENSE para mais informações.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+javascript
+Copiar
+Editar

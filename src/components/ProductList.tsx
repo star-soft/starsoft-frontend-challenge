@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts, addProducts, setPage } from "@/slices/productsSlice";
@@ -16,7 +15,7 @@ interface ProductListProps {
   initialMetadata?: ProductMetadata;
 }
 
-const ITEMS_PER_PAGE = 8; // Número de itens no primeiro carregamento
+const ITEMS_PER_PAGE = 8;
 
 const ProductList = ({
   initialProducts = [],
@@ -32,32 +31,43 @@ const ProductList = ({
       };
     }) => state.products,
   );
-
   const { data, isLoading, error } = useProducts(page);
-
   const [isButtonLoading, setIsButtonLoading] = useState(false);
+  const [visibleProducts, setVisibleProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     if (initialProducts.length > 0 && initialMetadata) {
-      // Define os produtos iniciais no estado global
       dispatch(
         setProducts({
           products: initialProducts,
           metadata: initialMetadata,
         }),
       );
+      setVisibleProducts(initialProducts.slice(0, ITEMS_PER_PAGE));
     }
   }, [initialProducts, initialMetadata, dispatch]);
 
   useEffect(() => {
     if (data) {
-      // Adiciona mais produtos ao estado global
       dispatch(
         addProducts({
           products: data.products,
           metadata: data.metadata,
         }),
       );
+
+      setVisibleProducts((prevVisible) => {
+        const combinedProducts = [
+          ...prevVisible,
+          ...products.slice(prevVisible.length),
+          ...data.products,
+        ];
+
+        return combinedProducts.filter(
+          (product, index, self) =>
+            index === self.findIndex((item) => item.id === product.id),
+        );
+      });
       setIsButtonLoading(false);
     }
   }, [data, dispatch]);
@@ -71,7 +81,7 @@ const ProductList = ({
 
   if (isLoading && products.length === 0)
     return (
-      <ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <ul className="flex overflow-auto md:overflow-visible h-[460px] md:h-auto gap-4 md:grid xl:grid-cols-1 xl:gap-8 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
         {[...Array(ITEMS_PER_PAGE)].map((_, index) => (
           <li key={index}>
             <CardSkeleton />
@@ -79,19 +89,18 @@ const ProductList = ({
         ))}
       </ul>
     );
-
-  if (error) return <p>Erro ao carregar os produtos.</p>;
+  if (error) return <p>Erro ao carregar produtos</p>;
 
   const progressValue = Math.min(
-    (products.length / (metadata?.count || 1)) * 100,
+    (visibleProducts.length / (metadata?.count || 1)) * 100,
     100,
   );
 
   return (
     <div className="text-white">
-      <ul className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.length > 0 ? (
-          products.slice(0, ITEMS_PER_PAGE * page).map((product: Product) => (
+      <ul className="flex overflow-auto md:overflow-visible h-[460px] md:h-auto gap-4 md:grid xl:grid-cols-1 xl:gap-8 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+        {visibleProducts.length > 0 ? (
+          visibleProducts.map((product: Product) => (
             <li key={product.id}>
               <CardProduct product={product} openCart={() => {}} />
             </li>

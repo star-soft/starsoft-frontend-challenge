@@ -57,6 +57,13 @@ const cartSlice = createSlice({
         //somar os valores dos produtos
         state.total += action.payload.price;
         state.isOpen = true;
+
+        const item = state.items.find((item) => item.id === action.payload.id);
+        if (item) {
+          state.isSold = true;
+        } else {
+          state.isSold = false;
+        }
       }
     },
     removeFromCart: (state, action: PayloadAction<number>) => {

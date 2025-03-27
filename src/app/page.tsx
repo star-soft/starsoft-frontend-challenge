@@ -1,9 +1,15 @@
 import ProductList from "@/components/ProductList";
+import Head from "next/head";
 
 export default function Home() {
   return (
-    <div>
-      <ProductList />
-    </div>
+    <>
+      <Head>
+        <title>NFT SHOP</title>
+      </Head>
+      <div>
+        <ProductList />
+      </div>
+    </>
   );
 }

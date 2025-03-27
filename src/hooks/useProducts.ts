@@ -6,6 +6,5 @@ export const useProducts = (page: number) => {
     queryKey: ["products", page],
     queryFn: () => productRepo.getProducts(page, 10),
     refetchOnWindowFocus: false,
-    placeholderData: (previousData) => previousData,
   });
 };

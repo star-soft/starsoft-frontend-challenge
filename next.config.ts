@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    // loader: "custom",
+    // loaderFile: "imageLoader.ts",
+    // se você quiser usar um loader de imagem personalizado...
+    // lembres-se de descomentar as linhas acima e também o arquivo imageLoader.ts
+    // e adicionar os atributos necessários no componente de <Image/>
     remotePatterns: [
       {
         protocol: "https",

@@ -5,6 +5,7 @@ import {
   removeQuantity,
   addQuantity,
   toggleCart,
+  clearCart,
 } from "@/slices/cartSlice";
 import {
   Sheet,
@@ -14,10 +15,14 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { Button } from "./ui/button";
+import { useState } from "react";
+import CheckoutTransition from "./CheckoutTransition";
+import { toast } from "sonner";
 
 const Cart = () => {
   const dispatch = useDispatch();
-
+  const [isPay, setIsPay] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const {
     items: cartItems,
     total,
@@ -37,16 +42,29 @@ const Cart = () => {
         isOpen: boolean;
       };
     }) => state.cart,
-  ); // Busca os itens e o total do carrinho
-
+  );
   const handleRemoveItem = (id: string) => {
-    dispatch(removeFromCart(Number(id))); // Remove um item do carrinho pelo ID
+    dispatch(removeFromCart(Number(id)));
   };
   const handleRemoveQuantity = (id: string) => {
-    dispatch(removeQuantity(Number(id))); // Remove uma unidade do item do carrinho pelo ID
+    dispatch(removeQuantity(Number(id)));
   };
   const handleAddQuantity = (id: string) => {
-    dispatch(addQuantity(Number(id))); // Remove uma unidade do item do carrinho pelo ID
+    dispatch(addQuantity(Number(id)));
+  };
+  const handlePay = () => {
+    setIsPay(true);
+    setIsAnimating(true);
+  };
+  const handleAnimationEnd = () => {
+    setIsAnimating(false);
+    setIsPay(false);
+    dispatch(clearCart());
+    dispatch(toggleCart(false));
+    toast.success("Compra realizada com sucesso", {
+      style: { color: "green" },
+      duration: 2000,
+    });
   };
   return (
     <div>
@@ -69,7 +87,7 @@ const Cart = () => {
           aria-labelledby="dialog-title"
           aria-describedby="dialog-description"
           role="dialog"
-          className="text-white"
+          className="text-white overflow-hidden"
         >
           <SheetHeader>
             <SheetTitle className="text-white text-lg xl:text-2xl font-bold">
@@ -151,7 +169,6 @@ const Cart = () => {
             )}
           </div>
 
-          {/* Total do carrinho */}
           {cartItems.length > 0 && (
             <div className="mt-6 border-t border-white/10 p-4">
               <div className="flex justify-between text-xl font-bold">
@@ -169,10 +186,16 @@ const Cart = () => {
                   {total} ETH
                 </p>
               </div>
-              <Button className="w-full h-16 mt-4 bg-primary">
+              <Button
+                className="w-full h-16 mt-4 bg-primary"
+                onClick={() => handlePay()}
+              >
                 Finalizar Compra
               </Button>
             </div>
+          )}
+          {isPay && isAnimating && (
+            <CheckoutTransition onAnimationEnd={handleAnimationEnd} />
           )}
         </SheetContent>
       </Sheet>
