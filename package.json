@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npm run format:watch & npm run lint & next dev --turbopack",
-    "stag": "next dev",
+    "stag": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
