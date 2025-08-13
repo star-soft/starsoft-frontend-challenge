@@ -1,0 +1,154 @@
+name: discord message
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # precisamos do histórico anterior para comparar arquivos
+          fetch-depth: 2
+
+      - name: Preparar e enviar mensagem para o Discord
+        shell: bash
+        run: |
+          # Variáveis do commit
+          REPO="${{ github.repository }}"
+          BRANCH="${{ github.ref_name }}"
+          ACTOR="${{ github.actor }}"
+          COMMIT_SHA="${{ github.sha }}"
+          SHORT_SHA="${COMMIT_SHA:0:7}"
+          COMMIT_URL="https://github.com/${REPO}/commit/${COMMIT_SHA}"
+          COMPARE_URL="${{ github.event.compare }}"
+          
+          # Dados do head_commit
+          AUTHOR_NAME="${{ github.event.head_commit.author.name || '' }}"
+          AUTHOR_USERNAME="${{ github.event.head_commit.author.username || '' }}"
+          HEAD_TS="${{ github.event.head_commit.timestamp || '' }}"
+          RAW_MSG="${{ github.event.head_commit.message || '' }}"
+
+          # Processar mensagem do commit
+          TITLE="$(printf "%s" "$RAW_MSG" | head -n1)"
+          BODY="$(printf "%s" "$RAW_MSG" | tail -n +2 | sed '/^$/d' | head -10)"
+          [ -z "$TITLE" ] && TITLE="(sem título)"
+          [ -z "$BODY" ] && BODY="(sem descrição)"
+
+          # Escapar caracteres especiais para JSON
+          escape_json() {
+            echo "$1" | sed 's/\\/\\\\/g; s/"/\\"/g; s/\t/\\t/g; s/\r//g; s/\n/\\n/g'
+          }
+
+          TITLE_ESCAPED=$(escape_json "$TITLE")
+          BODY_ESCAPED=$(escape_json "$BODY")
+
+          # Horário formatado
+          if [ -n "$HEAD_TS" ]; then
+            TIMESTAMP="$HEAD_TS"
+          else
+            TIMESTAMP="$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")"
+          fi
+
+          # Arquivos alterados
+          BEFORE="${{ github.event.before }}"
+          if [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            CHANGED="$(git diff --name-only "$BEFORE" "$COMMIT_SHA" 2>/dev/null || true)"
+          else
+            CHANGED="$(git diff --name-only HEAD~1 HEAD 2>/dev/null || true)"
+          fi
+
+          COUNT_CHANGED=$(printf "%s\n" "$CHANGED" | sed '/^$/d' | wc -l | tr -d ' ')
+          LIST_CHANGED=$(printf "%s\n" "$CHANGED" | sed '/^$/d' | head -n 10 | sed 's/^/• /')
+          [ -z "$LIST_CHANGED" ] && LIST_CHANGED="• (sem alterações detectadas)"
+          LIST_CHANGED_ESCAPED=$(escape_json "$LIST_CHANGED")
+
+          # Autor display
+          if [ -n "$AUTHOR_NAME" ]; then
+            if [ -n "$AUTHOR_USERNAME" ]; then
+              AUTHOR_DISPLAY="${AUTHOR_NAME} (@${AUTHOR_USERNAME})"
+            else
+              AUTHOR_DISPLAY="${AUTHOR_NAME}"
+            fi
+          else
+            AUTHOR_DISPLAY="${ACTOR}"
+          fi
+          AUTHOR_DISPLAY_ESCAPED=$(escape_json "$AUTHOR_DISPLAY")
+
+          # Determinar cor do embed baseado no branch
+          if [ "$BRANCH" == "main" ] || [ "$BRANCH" == "master" ]; then
+            COLOR="16711680"  # Vermelho
+          elif [ "$BRANCH" == "develop" ] || [ "$BRANCH" == "dev" ]; then
+            COLOR="16776960"  # Amarelo
+          else
+            COLOR="65280"     # Verde
+          fi
+
+          # Criar payload JSON para o webhook
+          PAYLOAD=$(cat <<EOF
+          {
+            "username": "GitHub Actions",
+            "avatar_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+            "embeds": [
+              {
+                "title": "🚀 Push no Repositório",
+                "description": "**${REPO}**",
+                "color": ${COLOR},
+                "timestamp": "${TIMESTAMP}",
+                "fields": [
+                  {
+                    "name": "📝 Commit",
+                    "value": "\`${SHORT_SHA}\` - ${TITLE_ESCAPED}",
+                    "inline": false
+                  },
+                  {
+                    "name": "👤 Autor",
+                    "value": "${AUTHOR_DISPLAY_ESCAPED}",
+                    "inline": true
+                  },
+                  {
+                    "name": "🌿 Branch",
+                    "value": "\`${BRANCH}\`",
+                    "inline": true
+                  },
+                  {
+                    "name": "📁 Arquivos",
+                    "value": "${COUNT_CHANGED} alterados",
+                    "inline": true
+                  },
+                  {
+                    "name": "📄 Descrição",
+                    "value": "${BODY_ESCAPED}",
+                    "inline": false
+                  },
+                  {
+                    "name": "🗂️ Arquivos Modificados",
+                    "value": "\`\`\`\\n${LIST_CHANGED_ESCAPED}\\n\`\`\`",
+                    "inline": false
+                  },
+                  {
+                    "name": "🔗 Links",
+                    "value": "[Ver Commit](${COMMIT_URL}) | [Ver Diff](${COMPARE_URL})",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "GitHub Actions • ${REPO}",
+                  "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                }
+              }
+            ]
+          }
+          EOF
+          )
+
+          # Enviar para o Discord usando curl
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD" \
+            "https://discord.com/api/webhooks/${{ secrets.DISCORD_WEBHOOK_ID }}/${{ secrets.DISCORD_WEBHOOK_TOKEN }}" \
+            || echo "Falha ao enviar mensagem para o Discord"
